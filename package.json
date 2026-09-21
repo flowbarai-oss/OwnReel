@@ -1,0 +1,50 @@
+{
+  "name": "ownreel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/contracts",
+    "packages/studio"
+  ],
+  "scripts": {
+    "community:init": "node scripts/community-init.mjs",
+    "lint": "eslint .",
+    "audit:secrets": "node scripts/audit-secrets.mjs",
+    "audit:licenses": "node scripts/audit-licenses.mjs",
+    "test:community:e2e": "node scripts/e2e.mjs",
+    "test": "vitest run",
+    "test:all": "node --test scripts/export-source.test.mjs && vitest run",
+    "typecheck": "tsc --noEmit",
+    "dev:api": "tsx services/api/src/community/main.ts",
+    "dev": "npm run dev -w @flowbar/gen-studio",
+    "build:all": "npm run build -w @flowbar/gen-studio && tsc --noEmit"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.0.2",
+    "@fastify/multipart": "9.2.1",
+    "@fastify/rate-limit": "10.3.0",
+    "fastify": "5.12.1",
+    "file-type": "21.3.4",
+    "postgres": "3.4.7",
+    "sharp": "0.35.4",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.3.0",
+    "esbuild": "0.28.2",
+    "eslint": "9.39.4",
+    "ffprobe-static": "3.1.0",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2",
+    "typescript-eslint": "8.70.0",
+    "vitest": "4.1.11"
+  }
+}

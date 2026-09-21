@@ -1,0 +1,45 @@
+name: Bug report
+description: Report a reproducible problem in the self-hosted community edition.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not attach credentials, provider keys, customer/private media, or database dumps. Use synthetic or authorized media only.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Describe the problem and the smallest reproduction you found.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit or version
+      placeholder: e.g. output of `git rev-parse HEAD` or the release tag
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Docker/Compose version, Node version, deployment mode (Docker vs native dev).
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Output of `docker compose ... logs --tail=100 api` or similar. Redact secrets before pasting.
+      render: shell
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Anything else / known limitations

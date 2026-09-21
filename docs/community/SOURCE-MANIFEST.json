@@ -1,0 +1,174 @@
+{
+  "sourceCommit": "0751fe7f7a922940fb324bbb83074db6bc48a803",
+  "upstreamLicense": "MIT",
+  "files": [
+    {
+      "file": "LICENSE",
+      "sha256": "bb4a0647f0778dcb28e1dfae111a76735e5c3244760b7a19613728520cac9d86"
+    },
+    {
+      "file": "NOTICE",
+      "sha256": "23b2aa23a7604c89c13afe21243e4053e6929b18548ac977fec86523a5eee0fa"
+    },
+    {
+      "file": "packages/contracts/src/workstation.ts",
+      "sha256": "e7602dfe1c240958874fc2fb0009496765a37fb062b86a99f7140e27bedf3606"
+    },
+    {
+      "file": "packages/contracts/src/workstation-effects.ts",
+      "sha256": "9542f4a4c49ec0e00bf8078cb675a6b54bcc0f5794c12dfe4af345877a9674f3"
+    },
+    {
+      "file": "packages/contracts/src/caption-appearance.ts",
+      "sha256": "f7e6559a0b9a7b16f1dea3ab921e6d2b1b6feb271f83f354e2c9cf2a91aaadc3"
+    },
+    {
+      "file": "packages/studio/components/VideoWorkstation.tsx",
+      "sha256": "f92c274ae1c5ffcd410bc060c91f70155b17a3813d49b2ddaf82175f553f90a3"
+    },
+    {
+      "file": "packages/studio/components/WorkstationTracks.tsx",
+      "sha256": "3be718804fd2b0e5041d3818415a4d77df2a62f04d25cd64635ce46f02c6aab0"
+    },
+    {
+      "file": "packages/studio/components/WorkstationStyleEffects.tsx",
+      "sha256": "deb5636949b7223651bf554e7ddd47ac72ea1b52595071a2416dd69ef9d3ed80"
+    },
+    {
+      "file": "packages/studio/components/WorkstationStickers.tsx",
+      "sha256": "dff31e462b11333252f5d76eae0d30d36300f5075544951122348ca55faf22e1"
+    },
+    {
+      "file": "packages/studio/components/WorkstationPlayhead.tsx",
+      "sha256": "c5d96e36073feec2d5f6b86cefb6bdd6b48f750fa494aba5abe454d2e661be92"
+    },
+    {
+      "file": "packages/studio/components/WorkstationPanels.tsx",
+      "sha256": "220ab4feed9b1559d4e5e2a6a0c59e97a4078b534ceb4460b80950df5955c114"
+    },
+    {
+      "file": "packages/studio/components/WorkstationEffectPreviewFilters.tsx",
+      "sha256": "d469c54c984548f2962fdab6651de4cd888abe9e8a922b8cfaff2ebabeda7c25"
+    },
+    {
+      "file": "packages/studio/components/WorkstationEffectLibrary.tsx",
+      "sha256": "e0cdb5369b8d228e6ee739f9693ff2d7a742cf1ffb92c4b591f50a3041d3c680"
+    },
+    {
+      "file": "packages/studio/components/WorkstationClip.tsx",
+      "sha256": "1aba3cf77da5a5583570bcc9fe2cfb7df8eb3fd6ce74ceb4a4b1a85159661f9e"
+    },
+    {
+      "file": "packages/studio/components/WorkstationCaption.tsx",
+      "sha256": "d3ee5def28f08f1e6b9d805faaa63c78cb87b6c041fc5c3a27159d5cdbda45be"
+    },
+    {
+      "file": "packages/studio/components/WorkstationAssetImport.tsx",
+      "sha256": "36a2bf8868fb44003614bcd395fc289cd6443614f3090b39faa2fe9443ccf0c6"
+    },
+    {
+      "file": "packages/studio/components/CaptionAppearanceControls.tsx",
+      "sha256": "ab1c6600ce44592a47c797cc6383983f023217f9918279b64953e10dc71e51bc"
+    },
+    {
+      "file": "packages/studio/components/caption-appearance.css",
+      "sha256": "d3cd042afb576a9ff2c73042a68f465e3b812d00e024ae9aa0368f69ac51c5b7"
+    },
+    {
+      "file": "packages/studio/components/video-workstation.css",
+      "sha256": "aa8e53b09cd7f6f50a9777725db5acdd14db227643b842f7e04327598c807b1d"
+    },
+    {
+      "file": "packages/studio/lib/video-timeline.ts",
+      "sha256": "254db571218a56db3269d8fc8ea1115000e73c0e32af8059693597dcd8101886"
+    },
+    {
+      "file": "packages/studio/lib/video-timeline.test.ts",
+      "sha256": "fdc8b0fdf21c2abd15c617dbae687106b30de49e6b44bdc164cc05b4eb17e098"
+    },
+    {
+      "file": "packages/studio/lib/clip-effects.ts",
+      "sha256": "7891b2673eba896ea718e7aa293d3b176db5a949390314346b5eeffa9b766eab"
+    },
+    {
+      "file": "packages/studio/lib/clip-effects.test.ts",
+      "sha256": "f48274671b9f0deead1de6a4a14a4a8464c7c2a987e16969913d7788f0a89c04"
+    },
+    {
+      "file": "packages/studio/lib/effect-preview.ts",
+      "sha256": "ec16f51fe0befd608bc2ff856efd3f28926b5fcdc7bae81be46d194a30081194"
+    },
+    {
+      "file": "packages/studio/lib/effect-preview.test.ts",
+      "sha256": "a9ae8e88a60eda327f38db29c6b3b23704d396ae546fbed535ecc7169d883323"
+    },
+    {
+      "file": "packages/studio/lib/use-workstation-previews.ts",
+      "sha256": "13b2b39ccab759cc5b6a230b377bfdbb0ae55ca6409a09dd7c0bdbe9dd965844"
+    },
+    {
+      "file": "packages/studio/lib/sticker-position.ts",
+      "sha256": "67a834aefe41ef47a276914e52e9b78499041ec6a7485c4aae7d5f95460e1320"
+    },
+    {
+      "file": "packages/studio/lib/sticker-position.test.ts",
+      "sha256": "260f2e53661d04f12cb4ce98fcd4598f13b7520d468d2285960f7fe27acefe31"
+    },
+    {
+      "file": "packages/studio/lib/blend-mode.ts",
+      "sha256": "de699962ad8dca0cec4178070fd707942d9d8f2a8c09e58245efe8c9c14223e1"
+    },
+    {
+      "file": "packages/studio/lib/blend-mode.test.ts",
+      "sha256": "778493d6571f0d6e1efbf570350c1183f96fa2b4023c59c81a3bf278bf98e2b2"
+    },
+    {
+      "file": "packages/studio/lib/clip-capabilities.ts",
+      "sha256": "06c0ad09539f9c39ee7e1da3c41ba7b6fc2e00355178c2de7a388b23483b7067"
+    },
+    {
+      "file": "packages/studio/lib/clip-capabilities.test.ts",
+      "sha256": "c520967b9a5e452569d6546090ebca4f1e5dd687e81995929b02fc27f0d0c65c"
+    },
+    {
+      "file": "services/worker/src/workstation-render.ts",
+      "sha256": "61a6a9829c42abe06d66a1b672c02d1a3f71e6e3cc17d3344c5cb5a7e9d914ae"
+    },
+    {
+      "file": "services/worker/src/workstation-render.test.ts",
+      "sha256": "8e92c13a48b8da5620044ded0d68af1aecf211cfd19cfc7cb57c2480a83d9ea3"
+    },
+    {
+      "file": "services/worker/src/workstation-effects.ts",
+      "sha256": "5e73e9642aaf2c0a0524201b036ac85eeab6722aaf02a693b5c3a7a03c6fa6a6"
+    },
+    {
+      "file": "services/worker/src/workstation-effect-presets.ts",
+      "sha256": "d5204543f78de0c95020825a92d0120de1110b08e49744f49df65907ceec4afb"
+    },
+    {
+      "file": "services/worker/src/workstation-effect-presets.test.ts",
+      "sha256": "3362e7cccf0fa70c14f21cffaa643e9fb3b374fc41d43632b936a95bb8049940"
+    },
+    {
+      "file": "services/worker/src/workstation-canvas.ts",
+      "sha256": "f57d7a3a066d329151aa630d50ef2029c2d15d19c79201c8185a2f8b28b238a2"
+    },
+    {
+      "file": "services/worker/src/workstation-blend.ts",
+      "sha256": "2856311217ba348720fa1972fbb9318f6a740a58e8c63f9cd3b5719f93da3b23"
+    },
+    {
+      "file": "services/worker/src/workstation-blend.test.ts",
+      "sha256": "459989871dc855578c3b5f6ffa183dd04f397e52d028ee8eabb6e2715d2823e7"
+    },
+    {
+      "file": "services/worker/src/caption-render.ts",
+      "sha256": "e68ef923ac5ba2799f10a292e9e562f5853d276cc1ee12e56dd356b94973af14"
+    },
+    {
+      "file": "services/api/src/crypto.ts",
+      "sha256": "b449beeac8fe06085a26dd9cdc2b55af29744278da00fa8c080fb4ad563cc6dc"
+    }
+  ]
+}

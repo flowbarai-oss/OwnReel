@@ -1,0 +1,6 @@
+.caption-appearance-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:12px 0; }
+.caption-appearance-controls label { display:flex; flex-direction:column; gap:5px; min-width:0; font-size:12px; }
+.caption-appearance-controls input,.caption-appearance-controls select { min-width:0; width:100%; box-sizing:border-box; color:inherit; background:#161d29; border:1px solid #344050; border-radius:5px; padding:7px; }
+.caption-appearance-controls input[type=color] { min-height:34px; padding:3px; }
+.caption-appearance-controls label:has(input[type=checkbox]) { flex-direction:row; align-items:center; }
+.caption-appearance-controls input[type=checkbox] { width:auto; }

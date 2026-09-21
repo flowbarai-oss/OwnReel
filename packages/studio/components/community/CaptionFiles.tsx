@@ -1,0 +1,8 @@
+'use client';
+import {useRef,useState} from 'react';
+import {parseSrt,writeSrt} from '@/lib/srt';
+import {makeClip,validateTimeline,type Timeline} from '@/lib/video-timeline';
+export function CaptionFiles({timeline,onChange,en}:{timeline:Timeline;onChange:(value:Timeline)=>void;en:boolean}){
+ const input=useRef<HTMLInputElement>(null),[error,setError]=useState('');
+ return <div className="row"><button onClick={()=>input.current?.click()} disabled={!timeline.clips.length}>{en?'Import SRT':'导入 SRT'}</button><input ref={input} hidden type="file" accept=".srt" onChange={async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>100000)throw new Error('subtitle_file_too_large');const subtitles=parseSrt(await file.text());const source=timeline.clips.find(c=>c.track==='video');if(!source)throw new Error('video_track_required');const value={...timeline,clips:[...timeline.clips.filter(c=>c.track!=='caption'),...subtitles.map(s=>({...makeClip(source.sourceAssetId,'caption',s.end-s.start,s.start),sourceKind:source.sourceKind,text:s.text}))]};validateTimeline(value);onChange(value);setError('');}catch(e){setError((e as Error).message);}finally{e.target.value='';}}}/><button onClick={()=>{const text=writeSrt(timeline.clips.filter(c=>c.track==='caption').map(c=>({start:c.start,end:c.start+(c.out-c.in)/c.speed,text:c.text})).sort((a,b)=>a.start-b.start));const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='captions.srt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}}>{en?'Save SRT':'保存 SRT'}</button>{error&&<span role="alert">{error}</span>}</div>;
+}

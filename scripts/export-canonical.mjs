@@ -1,0 +1,13 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import {resolve} from 'node:path';
+import {exportSource} from './export-source.mjs';
+const root=process.argv[2];
+if(!root)throw new Error('Pass an explicit clean canonical repository path.');
+const sha=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+if(sha!=='0751fe7f7a922940fb324bbb83074db6bc48a803')throw new Error('Unexpected baseline');
+if(execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim())throw new Error('Source tree is dirty');
+const files=JSON.parse(await readFile(new URL('./source-allowlist.json',import.meta.url),'utf8'));
+const manifest=await exportSource(resolve(root,'gen-studio-next'),process.cwd(),files);
+await writeFile('docs/community/SOURCE-MANIFEST.json',JSON.stringify({sourceCommit:sha,upstreamLicense:'MIT',files:manifest},null,2)+'\n',{flag:'wx'});
+console.log(`Exported ${manifest.length} explicitly selected files. No Git history or media copied.`);

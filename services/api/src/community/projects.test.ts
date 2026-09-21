@@ -1,0 +1,48 @@
+import {expect,test} from 'vitest';
+import {PGlite} from '@electric-sql/pglite';
+import Fastify from 'fastify';
+import {mkdtemp,rm} from 'node:fs/promises';
+import {join} from 'node:path';
+import {tmpdir} from 'node:os';
+import sharp from 'sharp';
+import {CommunityStore} from './store.js';
+import {LocalMedia} from './media.js';
+import {registerProjects} from './projects.js';
+import {JobQueue} from './jobs.js';
+test('uploaded assets survive project reload; referenced media cannot be deleted; timeline uses optimistic locking',async()=>{
+ const db=new PGlite();await db.waitReady;const root=await mkdtemp(join(tmpdir(),'gen-project-'));const app=Fastify();
+ try{
+  const store=new CommunityStore(db);await store.migrate();const user=await store.initialize('creator','hash');
+  const queue=new JobQueue(db);await queue.migrate();
+  app.decorateRequest('communityUser',null);app.addHook('onRequest',async req=>{req.communityUser=user;});
+  await registerProjects(app,store,new LocalMedia(root));
+  const project=(await app.inject({method:'POST',url:'/api/v1/projects',payload:{name:'First film'}})).json().data;
+  expect(project.name).toBe('First film');
+  const bytes=await sharp({create:{width:320,height:180,channels:3,background:'#00ccff'}}).png().toBuffer();
+  const body=Buffer.concat([Buffer.from('--test\r\nContent-Disposition: form-data; name="file"; filename="frame.png"\r\nContent-Type: image/png\r\n\r\n'),bytes,Buffer.from('\r\n--test--\r\n')]);
+  const upload=await app.inject({method:'POST',url:'/api/v1/uploads/reference',headers:{'content-type':'multipart/form-data; boundary=test'},payload:body});
+  expect(upload.statusCode).toBe(200);const asset=upload.json().data;
+  expect(asset.width).toBe(320);
+  expect((await app.inject({method:'POST',url:`/api/v1/projects/${project.id}/assets`,payload:{assetId:asset.id}})).statusCode).toBe(200);
+  const restored=(await app.inject(`/api/v1/projects/${project.id}`)).json().data;
+  expect(restored.assets[0].id).toBe(asset.id);
+  expect((await app.inject({method:'DELETE',url:`/api/v1/assets/${asset.id}`})).statusCode).toBe(409);
+  const manifest={name:'First film',aspectRatio:'16:9',resolution:'720p',clips:[],expectedRevision:0};
+  const saved=await app.inject({method:'PUT',url:`/api/v1/projects/${project.id}/timeline`,payload:manifest});
+  expect(saved.statusCode).toBe(200);
+  const versions=(await app.inject(`/api/v1/projects/${project.id}/timeline/versions`)).json().data;
+  expect(versions[0].snapshot).toMatchObject({name:'First film',aspectRatio:'16:9',clips:[]});
+  const first=(await app.inject('/api/v1/assets?limit=1&offset=0')).json().data;
+  expect(first.nextOffset).toBe(null);
+  const second=(await app.inject('/api/v1/assets?limit=1&offset=1')).json().data;
+  expect(second.items).toHaveLength(0);
+  const cloned=(await app.inject({method:'POST',url:`/api/v1/projects/${project.id}/duplicate`})).json().data;
+  expect(cloned.id).not.toBe(project.id);
+  expect((await app.inject(`/api/v1/projects/${cloned.id}`)).json().data.assets[0].id).toBe(asset.id);
+  expect((await app.inject({method:'PUT',url:`/api/v1/projects/${project.id}/timeline`,payload:manifest})).statusCode).toBe(409);
+  const media=await app.inject({url:asset.signedUrl,headers:{range:'bytes=0-7'}});expect(media.statusCode).toBe(206);expect(media.rawPayload.length).toBe(8);
+  await app.inject({method:'DELETE',url:`/api/v1/projects/${project.id}`});await app.inject({method:'DELETE',url:`/api/v1/projects/${cloned.id}`});
+  await queue.submit(user.id,'using-image','image-video',{referenceAssetId:asset.id,prompt:'Move gently'});
+  expect((await app.inject({method:'DELETE',url:`/api/v1/assets/${asset.id}`})).statusCode).toBe(409);
+ }finally{await app.close();await db.close();await rm(root,{recursive:true,force:true});}
+});

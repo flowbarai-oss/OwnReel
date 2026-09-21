@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest an improvement or a new capability adapter.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: What are you trying to do that isn't possible or is awkward today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and limitations
+      description: Single-owner V1 has explicit boundaries (see README "Architecture and boundaries"). Note if this request depends on multi-tenant hosting, new provider adapters, or other out-of-scope changes.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

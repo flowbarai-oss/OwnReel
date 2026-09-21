@@ -1,0 +1,25 @@
+import {afterEach,expect,test} from 'vitest';
+import {PGlite} from '@electric-sql/pglite';
+import Fastify from 'fastify';
+import {CommunityStore} from './store.js';
+import {registerCommunityAuth} from './auth.js';
+const cleanups:Array<()=>Promise<unknown>>=[];
+afterEach(async()=>{for(const cleanup of cleanups.splice(0))await cleanup();});
+test('setup, login and logout operate without external auth; CSRF and setup reuse are denied',async()=>{
+ const db=new PGlite();await db.waitReady;const store=new CommunityStore(db);await store.migrate();
+ const app=Fastify();await registerCommunityAuth(app,store,{origin:'http://localhost:4420',setupToken:'test-once-token-with-sufficient-length',setupExpires:Date.now()+60000});
+ cleanups.push(()=>app.close(),()=>db.close());
+ const post=(url:string,payload:unknown,origin='http://localhost:4420')=>app.inject({method:'POST',url,payload:payload as object,headers:{origin}});
+ expect((await post('/api/community/setup',{token:'wrong',name:'admin',password:'Good-Password-1234'})).statusCode).toBe(403);
+ expect((await post('/api/community/setup',{token:'test-once-token-with-sufficient-length',name:'admin',password:'Good-Password-1234'},'https://evil.test')).statusCode).toBe(403);
+ expect((await post('/api/community/setup',{token:'test-once-token-with-sufficient-length',name:'admin',password:'Good-Password-1234'})).statusCode).toBe(200);
+ expect((await post('/api/community/setup',{token:'test-once-token-with-sufficient-length',name:'other',password:'Good-Password-1234'})).statusCode).toBe(409);
+ expect((await post('/api/community/login',{name:'admin',password:'wrong'})).statusCode).toBe(401);
+ const login=await post('/api/community/login',{name:'admin',password:'Good-Password-1234'});
+ expect(login.statusCode).toBe(200);expect(login.headers['set-cookie']).toContain('HttpOnly');
+ const cookie=String(login.headers['set-cookie']).split(';')[0];
+ expect((await app.inject({url:'/api/community/me',headers:{cookie}})).json().data.name).toBe('admin');
+ await app.inject({method:'POST',url:'/api/community/logout',headers:{cookie,origin:'http://localhost:4420'}});
+ expect((await app.inject({url:'/api/community/me',headers:{cookie}})).statusCode).toBe(401);
+ expect((await store.userByName('admin'))?.password_hash).not.toContain('Good-Password');
+});

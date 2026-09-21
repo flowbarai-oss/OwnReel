@@ -1,0 +1,1 @@
+{"compilerOptions":{"target":"ES2022","module":"ESNext","moduleResolution":"Bundler","strict":true,"esModuleInterop":true,"skipLibCheck":true,"resolveJsonModule":true,"jsx":"react-jsx","paths":{"@/*":["./packages/studio/*"]},"noEmit":true},"include":["services/**/*.ts","packages/**/*.ts","packages/**/*.tsx","tests/**/*.ts"],"exclude":["node_modules","packages/studio/.next"]}

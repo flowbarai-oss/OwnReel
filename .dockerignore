@@ -1,0 +1,17 @@
+.git
+node_modules
+**/node_modules
+**/.next
+data
+.env
+.env.*
+test-results
+playwright-report
+output
+*.log
+private-backup
+backups
+**/*.dump
+**/*.pem
+**/*.pfx
+**/*.tar.gz

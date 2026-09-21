@@ -1,0 +1,9 @@
+FlowBarAI GEN Studio
+Copyright (c) 2026 FlowBarAI
+
+This product contains modified portions of Open Generative AI.
+Copyright (c) 2026 Open Generative AI Contributors.
+Licensed under the MIT License. The original license is preserved in LICENSE.
+
+The first release does not include code from the Open-Poe-AI submodule because
+the pinned upstream revision does not provide an explicit license grant.

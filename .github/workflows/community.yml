@@ -1,0 +1,45 @@
+name: Community checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-cjk
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:all
+      - run: npm run audit:secrets
+      - run: npm run audit:licenses
+      - run: npm audit --omit=dev --registry=https://registry.npmjs.org
+      - run: npm run build:all
+      - run: npx playwright install --with-deps chrome
+      - run: npm run test:community:e2e
+      - name: Clean Docker install and real local export
+        run: |
+          node scripts/community-init.mjs
+          docker compose --env-file .env -f deploy/community/compose.yaml up --build -d
+          docker compose --env-file .env -f deploy/community/compose.yaml exec -T -e COMMUNITY_ACCEPTANCE=1 api node scripts/container-smoke.mjs
+      - name: Remove only CI compose resources
+        if: always()
+        run: |
+          if test -f .env; then docker compose --env-file .env -f deploy/community/compose.yaml down --volumes; fi
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: community-test-evidence
+          path: test-results
+          retention-days: 7

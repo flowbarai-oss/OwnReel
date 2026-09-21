@@ -1,0 +1,62 @@
+name: ownreel
+services:
+  database:
+    cpus: 0.5
+    mem_limit: 512m
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: community
+      POSTGRES_USER: community
+      POSTGRES_PASSWORD: ${COMMUNITY_DB_PASSWORD:?Run npm run community:init first}
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -h 127.0.0.1 -U community -d community"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  api:
+    cpus: 1.5
+    mem_limit: 1536m
+    stop_grace_period: 30s
+    build:
+      context: ../..
+      dockerfile: deploy/community/Dockerfile
+    command: [node, node_modules/tsx/dist/cli.mjs, services/api/src/community/main.ts]
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://community:${COMMUNITY_DB_PASSWORD}@database:5432/community
+      COMMUNITY_ORIGIN: ${COMMUNITY_ORIGIN:-http://localhost:4420}
+      COMMUNITY_BIND: 0.0.0.0
+      COMMUNITY_DATA_DIR: /data
+    volumes:
+      - media:/data
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:4421/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+  studio:
+    cpus: 0.5
+    mem_limit: 768m
+    build:
+      context: ../..
+      dockerfile: deploy/community/Dockerfile
+    command: [npm, run, start, -w, '@flowbar/gen-studio']
+    environment:
+      NODE_ENV: production
+      COMMUNITY_API_ORIGIN: http://api:4421
+    ports:
+      - '127.0.0.1:4420:4420'
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  database:
+  media:
