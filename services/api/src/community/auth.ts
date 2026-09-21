@@ -12,7 +12,7 @@ const safeEqual=(a:string,b:string)=>timingSafeEqual(Buffer.from(sha256Hex(a),'h
 export async function registerCommunityAuth(app:FastifyInstance,store:CommunityStore,options:{origin:string;setupToken:string;setupExpires:number}){
  const origin=new URL(options.origin).origin;
  const secure=origin.startsWith('https:');const cookieName=secure?'__Host-community_session':'community_session';
- await app.register(cookie);await app.register(rateLimit,{max:120,timeWindow:'1 minute'});
+ await app.register(cookie);await app.register(rateLimit,{max:process.env.COMMUNITY_E2E==='1'?1000:120,timeWindow:'1 minute'});
  app.decorateRequest('communityUser',null);
  app.addHook('onRequest',async(req,reply)=>{
   reply.header('Cache-Control','no-store').header('X-Content-Type-Options','nosniff');
