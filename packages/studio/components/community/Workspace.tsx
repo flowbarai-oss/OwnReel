@@ -60,10 +60,18 @@ export function Workspace({ onLogout }: { onLogout: () => void }) {
   }, []);
   useEffect(() => {
     void reload().catch((e) => setError(readableError(e, locale)));
-    const t = setInterval(() => {
-      void reload().catch(() => {});
-    }, 5000);
-    return () => clearInterval(t);
+    const tick = () => {
+      if (document.visibilityState === "visible") void reload().catch(() => {});
+    };
+    const t = setInterval(tick, 8000);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void reload().catch(() => {});
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(t);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [reload, locale]);
   const perform = async (action: () => Promise<unknown>) => {
     setError("");
