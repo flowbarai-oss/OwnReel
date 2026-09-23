@@ -8,6 +8,8 @@ A self-hosted creative studio with integrated image/video creation, editable sma
 
 [中文指南](docs/community/README.zh-CN.md) · [Operations](docs/community/OPERATIONS.md) · [Security](SECURITY.md) · [Capabilities](docs/community/CAPABILITY-MATRIX.md)
 
+![OwnReel projects view, showing a real local project on a fresh installation](docs/community/screenshots/projects-view.jpg)
+
 ## What you can make
 
 - **Integrated creation:** generate an image, select that saved asset for image-to-video, add the result to a project, edit and export without downloading and re-uploading between steps.
