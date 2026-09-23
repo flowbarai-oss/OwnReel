@@ -50,6 +50,8 @@ Jobs survive closing the browser. A failed job is not success. An uncertain subm
 
 ## Development and checks
 
+Running these commands natively (not inside Docker) needs Node 22.13+ or Node 24+ — ESLint 10 will not run on Node 22.0–22.12. Docker users are unaffected: the container pins a current Node 22 patch release, and the host only needs Node for the one-time `community-init.mjs` script above, which has no such requirement.
+
 ```sh
 npm ci --ignore-scripts
 npm run typecheck
