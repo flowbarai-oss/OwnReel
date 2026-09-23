@@ -1,6 +1,6 @@
 # V1 acceptance evidence
 
-Verification date: 2026-09-20. Author self-review, not an independent security certification. This records tested cases, not a guarantee of defect-free software.
+Verification date: 2026-09-20 (author self-review); independent re-verification on 2026-09-22 (E16). Neither is an independent security certification. This records tested cases, not a guarantee of defect-free software.
 
 | Gate | Evidence |
 |---|---|
@@ -19,6 +19,7 @@ Verification date: 2026-09-20. Author self-review, not an independent security c
 | E13 restore | Independent PostgreSQL/media volumes restored from stopped-writer backup; local login, project references, exact MP4 hash and decryption of an inert test-provider setting verified. No real provider key was copied to the acceptance server. |
 | E14 isolation/security | Owner scoping, CSRF origin, hashed sessions, media sniffing, bounded size, private files, provider URL allowlists, FFmpeg file/pipe protocol restriction, secret/history scan. |
 | E15 UI | EN/ZH navigation at 1440×900, 1280×720 and 390×844; storyboard persistence, native-dialog Escape, real export preview/seek. Editor 125% CSS-zoom proxy and mobile export/download checked; Chinese editor/mobile dialog checked separately. OS-level display scaling was not tested. |
+| E16 independent low-spec re-verification | Re-verified on 2026-09-22 on modest, independent hardware (2 vCPU, ~4 GB RAM, mechanical disk) unrelated to the original author's environment: clean `docker compose build`/`up`, full setup/login/upload/storyboard/editor cycle with a real FFmpeg export, then a container restart preserving the same project and an identical export file hash. |
 
 ## Reproduce free checks
 
