@@ -38,7 +38,7 @@
     "@electric-sql/pglite": "0.5.8",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
-    "@types/node": "26.6.1",
+    "@types/node": "26.6.2",
     "esbuild": "0.28.2",
     "eslint": "10.10.0",
     "ffprobe-static": "3.1.0",
